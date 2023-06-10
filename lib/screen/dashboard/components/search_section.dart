@@ -27,24 +27,25 @@ class _Search_SectionState extends State<Search_Section> {
     if (category == 'Servisan - No Servisan') {
       apiLink = 'servisan/single?noserv=';
     } else if (category == 'Servisan - Jenis Barang') {
-      apiLink = 'servisan/single?jenis=';
+      apiLink = 'servisan/search?field=jebar&keyword=';
     } else if (category == 'Servisan - Atas Nama') {
-      apiLink = 'servisan/single?nama=';
+      apiLink = 'servisan/search?field=atn&keyword=';
     } else if (category == 'Panggilan - Lokasi') {
-      apiLink = 'panggilan/single?lokasi=';
+      apiLink = 'panggilan/search?field=lok&keyword=';
     }
   }
 
   @override
-  Future<String> fetchData() async {
-    final response = await http.get(Uri.parse(apiLink));
+  Future fetchData(String query) async {
+    updateApiLink(categorySearch);
+    final response = await http.get(Uri.parse(Env.API_URL + apiLink + query));
     if (response.statusCode == 200) {
+      // Berhasil terhubung ke API
       print(response.body);
-      return response.body;
-      // return response.body;
     } else {
-      throw Exception('Failed to fetch data');
+      throw Exception('Failed to load data');
     }
+    return [];
   }
 
   @override
@@ -134,6 +135,7 @@ class _Search_SectionState extends State<Search_Section> {
                     highlightColor: Colors.transparent,
                     onPressed: () => {
                           // Navigator.pushNamed(context, '/servisan/search'),
+                          fetchData(_searchController.text)
                         }),
               ),
               fillColor: white_color,
