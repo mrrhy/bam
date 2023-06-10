@@ -20,11 +20,13 @@ class Calls_Section extends StatefulWidget {
 
 class Calls_SectionState extends State<Calls_Section> {
   late String categorySearch = "Terbaru";
+  late String statusCategory = "";
+  late String link = Env.API_URL + 'panggilan/latest';
   late Future<List<Panggilan>> _panggilan_list;
 
-  Future<List<Panggilan>> fetchData() async {
+  Future<List<Panggilan>> fetchData(api) async {
     final response =
-        await http.get(Uri.parse(Env.API_URL + 'panggilan/latest'));
+        await http.get(Uri.parse(api));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Panggilan.fromJson(job)).toList();
@@ -34,9 +36,39 @@ class Calls_SectionState extends State<Calls_Section> {
   }
 
   @override
+  void linkStatus(stat) {
+    switch (stat) {
+      case 'Terbaru':
+        link = Env.API_URL + 'panggilan/latest';
+        break;
+      case 'Status - Pending':
+        link = Env.API_URL + 'panggilan/status?stat=1';
+        break;
+      case 'Status - On The Way':
+        link = Env.API_URL + 'panggilan/status?stat=2';
+        break;
+      case 'Status - Tdk Dpt Dikerjakan':
+        link = Env.API_URL + 'panggilan/status?stat=8';
+        break;
+      case 'Status - Dibatalkan':
+        link = Env.API_URL + 'panggilan/status?stat=9';
+        break;
+      case 'Status - Selesai':
+        link = Env.API_URL + 'panggilan/status?stat=0';
+        break;
+      default:
+        link = Env.API_URL + 'servisan/latest';
+    }
+
+    setState(() {
+      _panggilan_list = fetchData(link);
+    });
+  }
+
+  @override
   void initState() {
     super.initState();
-    _panggilan_list = fetchData();
+    _panggilan_list = fetchData(link);
   }
 
   @override
@@ -181,7 +213,7 @@ class Calls_SectionState extends State<Calls_Section> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for (var i = 0; i < 8; i++) SkeletonCalls(),
+                        for (var i = 0; i < 13; i++) SkeletonCalls(),
                       ]),
                 );
               } else if (snapshot.data == null) {
@@ -260,11 +292,12 @@ class Calls_SectionState extends State<Calls_Section> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      value: 'Terbaru',
+                      value: categorySearch,
                       style: GoogleFonts.lato(fontSize: 14, color: black_color),
                       onChanged: (newValue) {
                         setState(() {
                           categorySearch = newValue!;
+                          linkStatus(newValue);
                         });
                         Navigator.of(context).pop();
                       },
@@ -487,17 +520,6 @@ class SkeletonCalls extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            ),
-            Container(
-              width: 100,
-              height: 10,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(3),
-              ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),

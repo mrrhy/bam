@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:bam_ui/theme/bam.colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:bam_ui/model/env.dart';
+import 'package:bam_ui/model/card.servisan.dart';
+import 'package:bam_ui/model/card.panggilan.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class Search_Section extends StatefulWidget {
   const Search_Section({Key? key});
 
@@ -10,7 +16,36 @@ class Search_Section extends StatefulWidget {
 }
 
 class _Search_SectionState extends State<Search_Section> {
-  String categorySearch = "Servisan - No Servisan";
+  late String categorySearch = "Servisan - No Servisan";
+  late String searchQuery = "";
+  late String apiLink = "servisan/single?noserv=";
+
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void updateApiLink(String category) {
+    if (category == 'Servisan - No Servisan') {
+      apiLink = 'servisan/single?noserv=';
+    } else if (category == 'Servisan - Jenis Barang') {
+      apiLink = 'servisan/single?jenis=';
+    } else if (category == 'Servisan - Atas Nama') {
+      apiLink = 'servisan/single?nama=';
+    } else if (category == 'Panggilan - Lokasi') {
+      apiLink = 'panggilan/single?lokasi=';
+    }
+  }
+
+  @override
+  Future<String> fetchData() async {
+    final response = await http.get(Uri.parse(apiLink));
+    if (response.statusCode == 200) {
+      print(response.body);
+      return response.body;
+      // return response.body;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +119,7 @@ class _Search_SectionState extends State<Search_Section> {
             height: 20,
           ),
           TextField(
+            controller: _searchController,
             autofocus: false,
             decoration: InputDecoration(
               hoverColor: Colors.transparent,
@@ -91,14 +127,14 @@ class _Search_SectionState extends State<Search_Section> {
               suffixIcon: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
                 child: IconButton(
-                  icon: const Icon(Icons.search),
-                  color: black_color,
-                  hoverColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onPressed: () =>
-                      Navigator.pushNamed(context, '/servisan/search'),
-                ),
+                    icon: const Icon(Icons.search),
+                    color: black_color,
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () => {
+                          // Navigator.pushNamed(context, '/servisan/search'),
+                        }),
               ),
               fillColor: white_color,
               filled: true,
@@ -154,7 +190,8 @@ class _Search_SectionState extends State<Search_Section> {
                   children: [
                     DropdownButtonFormField<String>(
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 1),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 1),
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(10.0),
@@ -162,11 +199,12 @@ class _Search_SectionState extends State<Search_Section> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      value: 'Servisan - No Servisan',
+                      value: categorySearch,
                       style: GoogleFonts.lato(fontSize: 14, color: black_color),
                       onChanged: (newValue) {
                         setState(() {
                           categorySearch = newValue!;
+                          updateApiLink(categorySearch);
                         });
                         Navigator.of(context).pop();
                       },
@@ -197,5 +235,3 @@ class _Search_SectionState extends State<Search_Section> {
         });
   }
 }
-
-

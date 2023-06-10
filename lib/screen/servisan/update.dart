@@ -402,7 +402,6 @@ class _UpdateServisanScreenState extends State<UpdateServisanScreen> {
                           Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: white_color,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
@@ -464,14 +463,23 @@ class _UpdateServisanScreenState extends State<UpdateServisanScreen> {
                                       fontSize: 11, color: white_color))),
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                            decoration: BoxDecoration(
-                              color: white_color,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
                             child: Column(
                               children: [
                                 DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    hoverColor: Colors.transparent,
+                                    hintText: 'Status',
+                                    fillColor: white_color,
+                                    filled: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 1),
+                                    border: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      ),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Status tidak boleh kosong';

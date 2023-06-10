@@ -20,10 +20,12 @@ class Services_Section extends StatefulWidget {
 
 class _Services_SectionState extends State<Services_Section> {
   late String categorySearch = "Terbaru";
+  late String statusCategory = "";
+  late String link = Env.API_URL + 'servisan/latest';
   late Future<List<Servisan>> _servisan_list;
 
-  Future<List<Servisan>> fetchData() async {
-    final response = await http.get(Uri.parse(Env.API_URL + 'servisan/latest'));
+  Future<List<Servisan>> fetchData(api) async {
+    final response = await http.get(Uri.parse(api));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Servisan.fromJson(job)).toList();
@@ -33,9 +35,42 @@ class _Services_SectionState extends State<Services_Section> {
   }
 
   @override
+  void linkStatus(stat) {
+    switch (stat) {
+      case 'Terbaru':
+        link = Env.API_URL + 'servisan/latest';
+        break;
+      case 'Status - Pending':
+        link = Env.API_URL + 'servisan/status?stat=1';
+        break;
+      case 'Status - On Progress':
+        link = Env.API_URL + 'servisan/status?stat=3';
+        break;
+      case 'Status - Tunggu Konfirmasi':
+        link = Env.API_URL + 'servisan/status?stat=2';
+        break;
+      case 'Status - Tdk Dpt Dikerjakan':
+        link = Env.API_URL + 'servisan/status?stat=8';
+        break;
+      case 'Status - Dibatalkan':
+        link = Env.API_URL + 'servisan/status?stat=9';
+        break;
+      case 'Status - Diambil':
+        link = Env.API_URL + 'servisan/status?stat=0';
+        break;
+      default:
+        link = Env.API_URL + 'servisan/latest';
+    }
+
+    setState(() {
+      _servisan_list = fetchData(link);
+    });
+  }
+
+  @override
   void initState() {
     super.initState();
-    _servisan_list = fetchData();
+    _servisan_list = fetchData(link);
   }
 
   @override
@@ -261,11 +296,12 @@ class _Services_SectionState extends State<Services_Section> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      value: 'Terbaru',
+                      value: categorySearch,
                       style: GoogleFonts.lato(fontSize: 14, color: black_color),
                       onChanged: (newValue) {
                         setState(() {
                           categorySearch = newValue!;
+                          linkStatus(newValue);
                         });
                         Navigator.of(context).pop();
                       },
@@ -287,8 +323,8 @@ class _Services_SectionState extends State<Services_Section> {
                           child: Text('Status - Tunggu Konfirmasi'),
                         ),
                         DropdownMenuItem(
-                          value: 'Status - Selesai',
-                          child: Text('Status - Selesai'),
+                          value: 'Status - Tdk Dpt Dikerjakan',
+                          child: Text('Status - Tdk Dpt Dikerjakan'),
                         ),
                         DropdownMenuItem(
                           value: 'Status - Dibatalkan',

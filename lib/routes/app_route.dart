@@ -7,7 +7,6 @@ import 'package:bam_ui/screen/info_active.dart';
 import 'package:bam_ui/screen/panggilan_active.dart';
 import 'package:bam_ui/screen/servisan_active.dart';
 
-// import 'package:bam_ui/screen/panggilan/detail2.dart';
 import 'package:bam_ui/screen/panggilan/detail.dart';
 
 import 'package:bam_ui/screen/panggilan/insert.dart';

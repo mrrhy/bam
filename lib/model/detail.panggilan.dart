@@ -25,10 +25,21 @@ class Panggilan {
       lok: json['lok'],
       kel: json['kel'],
       ket: json['ket'],
-      wkt_pgl: json['wkt_pgl'],
-      wkt_done: json['wkt_done'],
+      wkt_pgl: json['tgl_pgl'],
+      wkt_done: json['tgl_selesai'],
       stat: json['stat'],
       id_tek: json['id_tek'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id_pgl': id_pgl,
+        'lok': lok,
+        'kel': kel,
+        'ket': ket,
+        'wkt_pgl': wkt_pgl,
+        'wkt_done': wkt_done,
+        'stat': stat,
+        'id_tek': id_tek,
+      };
 }
