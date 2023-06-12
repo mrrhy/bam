@@ -1,3 +1,4 @@
+import 'package:bam_ui/screen/panggilan/search.dart';
 import 'package:bam_ui/screen/panggilan/update.dart';
 import 'package:bam_ui/screen/servisan/search.dart';
 import 'package:bam_ui/screen/servisan/update.dart';
@@ -20,6 +21,7 @@ final Map<String, WidgetBuilder> routes = {
   '/servisan/update': (BuildContext context) => UpdateServisanScreen(),
   '/servisan': (BuildContext context) => ServisanPage(),
   '/panggilan': (BuildContext context) => PanggilanPage(),
+  '/panggilan/search': (BuildContext context) => PanggilanSearchScreen(),
   '/panggilan/update': (BuildContext context) => UpdatePanggilanScreen(),
   '/info': (BuildContext context) => InfoPage(),
   '/detail_services': (BuildContext context) => DetailServisanScreen(),
