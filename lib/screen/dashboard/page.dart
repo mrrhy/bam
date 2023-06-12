@@ -1,8 +1,8 @@
+
 import 'package:bam_ui/screen/dashboard/components/today_services_section.dart';
 import 'package:flutter/material.dart';
 import 'package:bam_ui/theme/bam.colors.dart';
 import 'package:bam_ui/theme/bam.constant.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:bam_ui/screen/dashboard/components/new_calls_section.dart';
 import 'package:bam_ui/screen/dashboard/components/search_section.dart';
@@ -15,10 +15,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  Future<String> loadSvgAsset(String path) async {
-    return await rootBundle.loadString(path);
-  }
-
+  
   @override
   Widget build(BuildContext context) {
   var _width = ResponsiveDimension.screenWidth(context);

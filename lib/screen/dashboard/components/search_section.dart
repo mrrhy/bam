@@ -3,8 +3,6 @@ import 'package:bam_ui/theme/bam.colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:bam_ui/model/env.dart';
-import 'package:bam_ui/model/card.servisan.dart';
-import 'package:bam_ui/model/card.panggilan.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -17,15 +15,13 @@ class Search_Section extends StatefulWidget {
 
 class _Search_SectionState extends State<Search_Section> {
   late String categorySearch = "Servisan - No Servisan";
-  late String searchQuery = "";
   late String apiLink = "servisan/single?noserv=";
 
   final TextEditingController _searchController = TextEditingController();
 
-  @override
   void updateApiLink(String category) {
     if (category == 'Servisan - No Servisan') {
-      apiLink = 'servisan/single?noserv=';
+      apiLink = 'servisan/search?field=noserv&keyword=';
     } else if (category == 'Servisan - Jenis Barang') {
       apiLink = 'servisan/search?field=jebar&keyword=';
     } else if (category == 'Servisan - Atas Nama') {
@@ -36,16 +32,57 @@ class _Search_SectionState extends State<Search_Section> {
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   Future fetchData(String query) async {
     updateApiLink(categorySearch);
-    final response = await http.get(Uri.parse(Env.API_URL + apiLink + query));
-    if (response.statusCode == 200) {
-      // Berhasil terhubung ke API
-      print(response.body);
+    if (query == "") {
+      print("Tidak ada data yang diinputkan");
     } else {
-      throw Exception('Failed to load data');
+      final response = await http.get(Uri.parse(Env.API_URL + apiLink + query));
+      if (response.statusCode == 200) {
+        String Row = jsonDecode(response.body)['rows'].toString();
+
+        if (Row == "0") {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: black_color,
+              title: Text('Tidak Ada Data. Cari dengan kata kunci lain', style: TextStyle(color: white_color)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text('Cari', style: TextStyle(color: white_color)),
+                ),
+              ],
+            ),
+          );
+
+          print("Data tidak ditemukan");
+        } else {
+          _searchController.clear();
+          FocusScope.of(context).requestFocus(FocusNode());
+          if (categorySearch == 'Servisan - No Servisan') {
+            Navigator.pushNamed(context, '/detail_services',
+                arguments: query);
+          } else if (categorySearch == 'Servisan - Jenis Barang') {
+            Navigator.pushNamed(context, '/servisan/search',
+                arguments: jsonDecode(response.body)['data']);
+          } else if (categorySearch == 'Servisan - Atas Nama') {
+            Navigator.pushNamed(context, '/servisan/search',
+                arguments: jsonDecode(response.body)['data']);
+          } else if (categorySearch == 'Panggilan - Lokasi') {
+            Navigator.pushNamed(context, '/panggilan/search',
+                arguments: jsonDecode(response.body)['data']);
+          }
+        }
+      } else {
+        throw Exception('Failed to load data');
+      }
     }
-    return [];
   }
 
   @override

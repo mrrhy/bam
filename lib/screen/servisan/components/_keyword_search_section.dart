@@ -1,3 +1,4 @@
+import 'package:bam_ui/model/card.servisan.dart';
 import 'package:flutter/material.dart';
 import 'package:bam_ui/theme/bam.colors.dart';
 import 'package:bam_ui/theme/bam.constant.dart';
@@ -9,6 +10,10 @@ class ServicesSearch_Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final getData = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    final List<Servisan> data =
+        getData.map((e) => Servisan.fromJson(e)).toList();
+
     var _height = ResponsiveDimension.screenHeight(context);
     return Column(children: [
       Container(
@@ -16,7 +21,7 @@ class ServicesSearch_Section extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Expanded(
-            flex: 5,
+            flex: 7,
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
               child: Column(
@@ -24,7 +29,7 @@ class ServicesSearch_Section extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '"Key word Search"',
+                    'Hasil Pencarian',
                     style: GoogleFonts.lato(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -32,7 +37,7 @@ class ServicesSearch_Section extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Servisan - Nama Barang',
+                    'Berikut Tampilan Data Yang Anda Cari',
                     style: GoogleFonts.lato(
                       fontSize: 14,
                       color: white_color,
@@ -43,7 +48,7 @@ class ServicesSearch_Section extends StatelessWidget {
             ),
           ),
           Expanded(
-              flex: 5,
+              flex: 3,
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -52,21 +57,23 @@ class ServicesSearch_Section extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 1, vertical: 1),
                       decoration: BoxDecoration(
-                        color: primary_color,
+                        color: red_color,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: IconButton(
                           icon: Icon(
-                            Icons.clear_all_rounded,
+                            Icons.close,
                             color: white_color,
                           ),
                           color: white_color,
                           hoverColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          onPressed: () => {}),
+                          onPressed: () => {
+                            Navigator.pop(context)
+                          }),
                     ),
-                    ],
+                  ],
                 ),
               ))
         ]),
@@ -76,46 +83,20 @@ class ServicesSearch_Section extends StatelessWidget {
         width: double.infinity,
         height: _height * 0.788,
         child: SingleChildScrollView(
-          child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              ListServices(
-                noservis: 'SB - 10000',
-                jebar: 'Laptop Asus ROG',
-                tgl: '12 Juni 2021',
-                atn: 'Gusti',
-                stat: 'Pending',
-              ),
-              ListServices(
-                noservis: 'SB - 10001',
-                jebar: 'Printer Epson L3110',
-                tgl: '12 Juni 2021',
-                atn: 'Reksy',
-                stat: 'Pending',
-              ),
-              ListServices(
-                noservis: 'SB - 10002',
-                jebar: 'Laptop Acer Nitro 5',
-                tgl: '12 Juni 2021',
-                atn: 'Oktavianus',
-                stat: 'Tunggu Konfirmasi',
-              ),
-              ListServices(
-                noservis: 'SB - 10003',
-                jebar: 'Laptop Lenovo Legion 5',
-                tgl: '12 Juni 2021',
-                atn: 'Indra',
-                stat: 'On Progress',
-              ),
-              ListServices(
-                noservis: 'SB - 10004',
-                jebar: 'Notebook Asus',
-                tgl: '12 Juni 2021',
-                atn: 'Eko',
-                stat: 'On Progress',
-              ),
-            ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: data
+                .map((e) => ListServices(
+                      noservis: e.noserv,
+                      jebar: e.jebar,
+                      tgl: e.wkt_dtg,
+                      atn: e.atn,
+                      stat: e.stat,
+                    ))
+                .toList(),
           ),
         ),
+      ),
     ]);
   }
 }
