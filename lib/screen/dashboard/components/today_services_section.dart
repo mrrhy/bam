@@ -1,9 +1,13 @@
+import 'package:bam_ui/model/card.servisan.dart';
+import 'package:bam_ui/model/env.dart';
 import 'package:flutter/material.dart';
 import 'package:bam_ui/theme/bam.colors.dart';
 import 'package:bam_ui/theme/bam.constant.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bam_ui/screen/dashboard/widgets/today_services.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Today_Services_Section extends StatelessWidget {
   const Today_Services_Section({super.key});
@@ -129,46 +133,41 @@ class SkeletonServices extends StatelessWidget {
 class ListServices extends StatelessWidget {
   const ListServices({super.key});
 
+  Future<List<Servisan>> _getServisan() async {
+    final response = await http.get(Uri.parse(Env.API_URL + 'servisan/latest7'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((job) => new Servisan.fromJson(job)).toList();
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TodayServices(
-          noservis: 'SB - 10000',
-          jebar: 'Laptop Asus ROG',
-          tgl: '12 Juni 2021',
-          atn: 'Gusti',
-          stat: 'Pending',
-        ),
-        TodayServices(
-          noservis: 'SB - 10001',
-          jebar: 'Printer Epson L3110',
-          tgl: '12 Juni 2021',
-          atn: 'Reksy',
-          stat: 'Pending',
-        ),
-        TodayServices(
-          noservis: 'SB - 10002',
-          jebar: 'Laptop Acer Nitro 5',
-          tgl: '12 Juni 2021',
-          atn: 'Oktavianus',
-          stat: 'Tunggu Konfirmasi',
-        ),
-        TodayServices(
-          noservis: 'SB - 10003',
-          jebar: 'Laptop Lenovo Legion 5',
-          tgl: '12 Juni 2021',
-          atn: 'Indra',
-          stat: 'On Progress',
-        ),
-        TodayServices(
-          noservis: 'SB - 10004',
-          jebar: 'Notebook Asus',
-          tgl: '12 Juni 2021',
-          atn: 'Eko',
-          stat: 'On Progress',
-        ),
-      ],
+    return FutureBuilder<List<Servisan>>(
+      future: _getServisan(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Servisan>? data = snapshot.data;
+          return Column(
+            children: data!.map((servisan) => TodayServices(
+              noservis: servisan.noserv,
+              atn: servisan.atn,
+              jebar: servisan.jebar,
+              stat: servisan.stat,
+              tgl: servisan.wkt_dtg,
+              )).toList(),
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        return Column(
+          children: [
+            ListServicesSkeleton()
+          ],
+        );
+      },
     );
   }
 }

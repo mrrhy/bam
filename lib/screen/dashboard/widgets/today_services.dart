@@ -21,7 +21,7 @@ class TodayServices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () { Navigator.pushNamed(context, '/detail_services'); },
+      onTap: () { Navigator.pushNamed(context, '/detail_services', arguments: noservis); },
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(

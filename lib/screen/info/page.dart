@@ -62,7 +62,7 @@ class _InfoScreenState extends State<InfoScreen> {
             StatusCard(status: "Pending", color: yellow_color),
             StatusCard(status: "On Progress / On The Way", color: blue_color),
             StatusCard(status: "Tunggu Konfirmasi", color: purple_color),
-            StatusCard(status: "Tdk Dapat Diperbaiki / Dikerjakan", color: black_color),
+            StatusCard(status: "Tdk Dapat Dikerjakan", color: black_color),
             StatusCard(status: "Dibatalkan", color: red_color),
             StatusCard(status: "Diambil / Selesai", color: green_color),
           ],

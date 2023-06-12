@@ -5,11 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 class NewCalls extends StatelessWidget {
   const NewCalls({
     super.key,
+    required this.id,
     required this.lokasi,
     required this.teknisi,
     required this.status,
     });
 
+  final String id;
   final String lokasi;
   final String teknisi;
   final String status;
@@ -17,7 +19,7 @@ class NewCalls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () { Navigator.pushNamed(context, '/detail_calls'); },
+      onTap: () { Navigator.pushNamed(context, '/detail_calls', arguments: id); },
       child: Container(
         width: 194,
         height: 200,

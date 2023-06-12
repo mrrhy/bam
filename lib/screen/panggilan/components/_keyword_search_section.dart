@@ -1,14 +1,19 @@
+import 'package:bam_ui/model/card.panggilan.dart';
 import 'package:flutter/material.dart';
 import 'package:bam_ui/theme/bam.colors.dart';
 import 'package:bam_ui/theme/bam.constant.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:bam_ui/screen/panggilan/widgets/list_calls.dart';
+import 'package:bam_ui/screen/panggilan/widgets/list_calls.dart';
 
 class CallsSearch_Section extends StatelessWidget {
   const CallsSearch_Section({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final getData = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    final List<Panggilan> data =
+        getData.map((e) => Panggilan.fromJson(e)).toList();
+
     var _height = ResponsiveDimension.screenHeight(context);
     return Column(children: [
       Container(
@@ -16,7 +21,7 @@ class CallsSearch_Section extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Expanded(
-            flex: 5,
+            flex: 7,
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
               child: Column(
@@ -24,7 +29,7 @@ class CallsSearch_Section extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '"Key word Search"',
+                    'Hasil Pencarian',
                     style: GoogleFonts.lato(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -32,7 +37,7 @@ class CallsSearch_Section extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Servisan - Nama Barang',
+                    'Berikut Tampilan Data Yang Anda Cari',
                     style: GoogleFonts.lato(
                       fontSize: 14,
                       color: white_color,
@@ -43,7 +48,7 @@ class CallsSearch_Section extends StatelessWidget {
             ),
           ),
           Expanded(
-              flex: 5,
+              flex: 3,
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -52,21 +57,21 @@ class CallsSearch_Section extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 1, vertical: 1),
                       decoration: BoxDecoration(
-                        color: primary_color,
+                        color: red_color,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: IconButton(
                           icon: Icon(
-                            Icons.clear_all_rounded,
+                            Icons.close,
                             color: white_color,
                           ),
                           color: white_color,
                           hoverColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          onPressed: () => {}),
+                          onPressed: () => {Navigator.pop(context)}),
                     ),
-                    ],
+                  ],
                 ),
               ))
         ]),
@@ -76,12 +81,20 @@ class CallsSearch_Section extends StatelessWidget {
         width: double.infinity,
         height: _height * 0.788,
         child: SingleChildScrollView(
-          child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              
-            ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: data
+                .map((e) => ListCalls(
+                      id: e.id_pgl,
+                      lokasi: e.lok,
+                      tanggal: e.tgl,
+                      status: e.stat,
+                      teknisi: e.id_tek,
+                    ))
+                .toList(),
           ),
         ),
+      ),
     ]);
   }
 }

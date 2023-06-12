@@ -35,7 +35,6 @@ class Calls_SectionState extends State<Calls_Section> {
     }
   }
 
-  @override
   void linkStatus(stat) {
     switch (stat) {
       case 'Terbaru':
@@ -117,44 +116,44 @@ class Calls_SectionState extends State<Calls_Section> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 1, vertical: 1),
-                      decoration: BoxDecoration(
-                        color: primary_color,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.search,
-                            color: white_color,
-                          ),
-                          color: white_color,
-                          hoverColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () => {
-                                showGeneralDialog(
-                                    context: context,
-                                    pageBuilder: (context, anim1, anim2) =>
-                                        searchOverlayDialog(context),
-                                    barrierDismissible: true,
-                                    barrierLabel: '',
-                                    transitionDuration:
-                                        Duration(milliseconds: 200),
-                                    transitionBuilder:
-                                        (context, anim1, anim2, child) {
-                                      return SlideTransition(
-                                        position: Tween(
-                                                begin: Offset(0, 1),
-                                                end: Offset(0, 0))
-                                            .animate(anim1),
-                                        child: child,
-                                      );
-                                    })
-                              }),
-                    ),
-                    SizedBox(width: 10),
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(
+                    //       horizontal: 1, vertical: 1),
+                    //   decoration: BoxDecoration(
+                    //     color: primary_color,
+                    //     borderRadius: BorderRadius.circular(8),
+                    //   ),
+                    //   child: IconButton(
+                    //       icon: Icon(
+                    //         Icons.search,
+                    //         color: white_color,
+                    //       ),
+                    //       color: white_color,
+                    //       hoverColor: Colors.transparent,
+                    //       splashColor: Colors.transparent,
+                    //       highlightColor: Colors.transparent,
+                    //       onPressed: () => {
+                    //             showGeneralDialog(
+                    //                 context: context,
+                    //                 pageBuilder: (context, anim1, anim2) =>
+                    //                     searchOverlayDialog(context),
+                    //                 barrierDismissible: true,
+                    //                 barrierLabel: '',
+                    //                 transitionDuration:
+                    //                     Duration(milliseconds: 200),
+                    //                 transitionBuilder:
+                    //                     (context, anim1, anim2, child) {
+                    //                   return SlideTransition(
+                    //                     position: Tween(
+                    //                             begin: Offset(0, 1),
+                    //                             end: Offset(0, 0))
+                    //                         .animate(anim1),
+                    //                     child: child,
+                    //                   );
+                    //                 })
+                    //           }),
+                    // ),
+                    // SizedBox(width: 10),
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 1, vertical: 1),

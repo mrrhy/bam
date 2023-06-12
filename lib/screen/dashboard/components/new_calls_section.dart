@@ -3,6 +3,10 @@ import 'package:bam_ui/theme/bam.colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bam_ui/screen/dashboard/widgets/new_calls.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:bam_ui/model/card.panggilan.dart';
+import 'package:bam_ui/model/env.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class New_Calls_Section extends StatelessWidget {
   const New_Calls_Section({super.key});
@@ -101,31 +105,44 @@ class SkeletonCalls extends StatelessWidget {
 class ListCalls extends StatelessWidget {
   const ListCalls({super.key});
 
+  Future<List<Panggilan>> _getPanggilan() async {
+    final response = await http.get(Uri.parse(Env.API_URL + 'panggilan/latest5'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((job) => new Panggilan.fromJson(job)).toList();
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        NewCalls(
-            lokasi: 'Cucian Mobil Sepinggan Pratama',
-            teknisi: 'Ivan',
-            status: 'Pending'),
-        NewCalls(
-          lokasi: 'Grace Technic',
-          teknisi: 'Hadi',
-          status: 'On The Way',
-        ),
-        NewCalls(
-          lokasi: 'Toko Amin',
-          teknisi: 'Dayat',
-          status: 'Pending',
-        ),
-        NewCalls(
-          lokasi: 'BSI Klandasan',
-          teknisi: 'Hadi',
-          status: 'Selesai',
-        ),
-      ],
-    );
+    return FutureBuilder(
+      future: _getPanggilan(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Panggilan> data = snapshot.data as List<Panggilan>;
+          return Row(
+            children: [
+              for (var i = 0; i < data.length; i++)
+                NewCalls(
+                  id: data[i].id_pgl,
+                  lokasi: data[i].lok,
+                  teknisi: data[i].id_tek,
+                  status: data[i].stat,
+                ),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        return Row(
+          children: [
+            ListCallsSkeleton(),
+          ],
+        );
+      },
+      );
   }
 }
 
