@@ -1,5 +1,5 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:animations/animations.dart';
 import 'package:bam_ui/theme/bam.colors.dart';
 
 import 'package:bam_ui/screen/dashboard/page.dart';

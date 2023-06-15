@@ -32,6 +32,10 @@ class NewCalls extends StatelessWidget {
             'Selesai': green_color,
           }[status]!,
           borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: white_color,
+            width: 2,
+          )
         ),
         margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
         padding: const EdgeInsets.all(12),
@@ -48,23 +52,13 @@ class NewCalls extends StatelessWidget {
               ),
             ),
             Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 13)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  teknisi,
-                  style: GoogleFonts.lato(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: white_color,
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: white_color,
-                  size: 20,
-                )
-              ],
+            Text(
+              teknisi,
+              style: GoogleFonts.lato(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: white_color,
+              ),
             )
           ],
         ),
