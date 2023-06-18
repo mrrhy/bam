@@ -34,7 +34,6 @@ class _Services_SectionState extends State<Services_Section> {
     }
   }
 
-  @override
   void linkStatus(stat) {
     switch (stat) {
       case 'Terbaru':

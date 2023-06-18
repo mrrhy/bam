@@ -184,7 +184,7 @@ class DetailPanggilanScreen extends StatelessWidget {
                           child: Column(children: [
                             TextFormField(
                               enabled: false,
-                              initialValue: data![0].kel,
+                              initialValue: data[0].kel,
                               style: GoogleFonts.lato(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w800,
@@ -218,7 +218,7 @@ class DetailPanggilanScreen extends StatelessWidget {
                           child: Column(children: [
                             TextFormField(
                               enabled: false,
-                              initialValue: data![0].id_tek,
+                              initialValue: data[0].id_tek,
                               style: GoogleFonts.lato(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w800,
@@ -252,7 +252,7 @@ class DetailPanggilanScreen extends StatelessWidget {
                           child: Column(children: [
                             TextFormField(
                               enabled: false,
-                              initialValue: data![0].stat,
+                              initialValue: data[0].stat,
                               style: GoogleFonts.lato(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w800,
@@ -286,7 +286,7 @@ class DetailPanggilanScreen extends StatelessWidget {
                           child: Column(children: [
                             TextFormField(
                               enabled: false,
-                              initialValue: data![0].ket,
+                              initialValue: data[0].ket,
                               style: GoogleFonts.lato(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w800,
@@ -320,7 +320,7 @@ class DetailPanggilanScreen extends StatelessWidget {
                           child: Column(children: [
                             TextFormField(
                               enabled: false,
-                              initialValue: data![0].wkt_pgl,
+                              initialValue: data[0].wkt_pgl,
                               style: GoogleFonts.lato(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w800,
@@ -354,7 +354,7 @@ class DetailPanggilanScreen extends StatelessWidget {
                           child: Column(children: [
                             TextFormField(
                               enabled: false,
-                              initialValue: data![0].wkt_done,
+                              initialValue: data[0].wkt_done,
                               style: GoogleFonts.lato(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w800,
