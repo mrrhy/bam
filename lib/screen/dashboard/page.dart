@@ -27,12 +27,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
         width: _width,
         height: _height,
         padding: const EdgeInsets.fromLTRB(30, 75, 30, 0),
-        child: Column(
-          children: [
-            Search_Section(),
-            New_Calls_Section(),
-            Today_Services_Section()
-            ],
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Search_Section(),
+              New_Calls_Section(),
+              Today_Services_Section()
+              ],
+          ),
         ),
       ),
     );
